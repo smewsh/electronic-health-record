@@ -1,0 +1,75 @@
+@startuml
+
+class User {
+  +username: string
+  +password: string
+  +login(): void
+  +logout(): void
+}
+
+class Patient {
+  +id: int
+  +name: string
+  +dob: date
+  +gender: string
+  +contact: string
+  +email: string
+  +addAppointment(appointment: Appointment): void
+  +viewAppointment(): void
+  +addPrescription(prescription: Prescription): void
+  +viewPrescription(): void
+}
+
+class Appointment {
+  +id: int
+  +patient: Patient
+  +doctor: string
+  +date: date
+  +time: time
+  +location: string
+  +reason: string
+}
+
+class Prescription {
+  +id: int
+  +patient: Patient
+  +doctor: string
+  +date: date
+  +medication: string
+  +dosage: string
+}
+
+class MedicalHistory {
+  +id: int
+  +patient: Patient
+  +allergies: string
+  +conditions: string
+  +medications: string
+  +surgeries: string
+  +immunizations: string
+}
+
+class EHRSystem {
+  +users: User[]
+  +patients: Patient[]
+  +appointments: Appointment[]
+  +prescriptions: Prescription[]
+  +medicalHistories: MedicalHistory[]
+  +addUser(user: User): void
+  +addPatient(patient: Patient): void
+  +addAppointment(appointment: Appointment): void
+  +addPrescription(prescription: Prescription): void
+  +addMedicalHistory(medicalHistory: MedicalHistory): void
+  +viewPatient(patientId: int): Patient
+  +viewAppointment(appointmentId: int): Appointment
+  +viewPrescription(prescriptionId: int): Prescription
+  +viewMedicalHistory(medicalHistoryId: int): MedicalHistory
+}
+
+User -> EHRSystem
+Patient -> EHRSystem
+Appointment -> EHRSystem
+Prescription -> EHRSystem
+MedicalHistory -> EHRSystem
+
+@enduml
