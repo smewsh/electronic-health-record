@@ -1,75 +1,62 @@
 @startuml
 
 class User {
-  +username: string
-  +password: string
-  +login(): void
-  +logout(): void
+  + int : id
+  + String : firstNames
+  + String : lastName
 }
 
-class Patient {
-  +id: int
-  +name: string
-  +dob: date
-  +gender: string
-  +contact: string
-  +email: string
-  +addAppointment(appointment: Appointment): void
-  +viewAppointment(): void
-  +addPrescription(prescription: Prescription): void
-  +viewPrescription(): void
+class Patient extends User {
+    + String : CPR
+    + MedicalHistory : medicalHistory
+    + getMedicalHistory(): MedicalHistory
+}
+
+class Staff extends User {
+  + viewMedicalHistory(patient: Patient): MedicalHistory
+}
+
+class Doctor extends Staff {
+  + List<Appointment> : appointments
 }
 
 class Appointment {
-  +id: int
-  +patient: Patient
-  +doctor: string
-  +date: date
-  +time: time
-  +location: string
-  +reason: string
+  + Doctor : doctor
+  + Patient : patient
+  + Date : date
 }
 
 class Prescription {
-  +id: int
-  +patient: Patient
-  +doctor: string
-  +date: date
-  +medication: string
-  +dosage: string
+  + Patient : patient
+  + Doctor : doctor
+  + String : medication
+  + Date : date
 }
 
 class MedicalHistory {
-  +id: int
-  +patient: Patient
-  +allergies: string
-  +conditions: string
-  +medications: string
-  +surgeries: string
-  +immunizations: string
+    + List<Appointment> : appointments
+    + List<Prescription> : prescriptions
+    + List<MedicalCondition> : medicalConditions
+    + getAppointment(doctor: Doctor, date: Date): Appointment
+    + getPrescription(doctor: Doctor, date: Date): Prescription
+    + getMedicalCondition(condition: String): MedicalCondition
+    + setAppointment(doctor: Doctor, date: Date): Appointment
+    + setPrescription(doctor: Doctor, date: Date): Prescription
+    + setMedicalCondition(condition: String): MedicalCondition
 }
 
-class EHRSystem {
-  +users: User[]
-  +patients: Patient[]
-  +appointments: Appointment[]
-  +prescriptions: Prescription[]
-  +medicalHistories: MedicalHistory[]
-  +addUser(user: User): void
-  +addPatient(patient: Patient): void
-  +addAppointment(appointment: Appointment): void
-  +addPrescription(prescription: Prescription): void
-  +addMedicalHistory(medicalHistory: MedicalHistory): void
-  +viewPatient(patientId: int): Patient
-  +viewAppointment(appointmentId: int): Appointment
-  +viewPrescription(prescriptionId: int): Prescription
-  +viewMedicalHistory(medicalHistoryId: int): MedicalHistory
+class MedicalCondition {
+  + Patient : patient
+  + String : condition
 }
 
-User -> EHRSystem
-Patient -> EHRSystem
-Appointment -> EHRSystem
-Prescription -> EHRSystem
-MedicalHistory -> EHRSystem
+User --> Patient : is a
+User --> Staff : is a
+Staff --> Doctor : is a
+Patient --> MedicalHistory : has
+Staff --> Patient : accesses
+MedicalHistory --> Appointment : has/sets
+MedicalHistory --> Prescription : has/sets
+MedicalHistory --> MedicalCondition : has/sets
 
 @enduml
