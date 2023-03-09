@@ -2,44 +2,55 @@
 'https://plantuml.com/use-case-diagram
 
 rectangle EHR {
-'decide direction of diagram
-left to right direction
-'add actors
-:Patient:
-:Secretary:
-:Personal-Doctor:
-:Hospital-Doctor:
-:Nurse:
-:Radiographer:
-:MRI-personnel:
-'Patient right of Secretary
-rectangle use-cases {
-    'add use cases
-    usecase UC1 as "appointment booking"
-    usecase UC2 as "fill journal
---
-- Prescriptions
-__
-- History
-(notes)
-__
-- Test
-(results, notes, images)
-__
-- Scan
-(results, notes, images)
-"
-}
+    'decide direction of diagram
+    left to right direction
+    'add actors
+    :Patient:
+    :Secretary:
+    :Personal-Doctor:
+    :Hospital-Personnel:
+    rectangle use-cases {
+        'add use cases
+        usecase "sign in" as UC0
+        usecase "appointment booking" as UC1
+        rectangle Journal {
+            usecase UC2 as "HP: fill journal
+            --
+            - Prescriptions
+            __
+            - History
+            (appointments + notes)
+            __
+            - Test
+            (results, notes, images)
+            __
+            - Scan
+            (results, notes, images)
+            "
 
-'relationships
-Patient --> UC1 : "suggest"
-Patient --> UC2 : "view"
-Secretary --> UC1 : "confirm"
-:Personal-Doctor: --> UC2 : "edit"
-:Hospital-Doctor: --> UC2 : "add"
-Nurse --> UC2 : "add"
-Radiographer --> UC2 : "add"
-:MRI-personnel: --> UC2 : "add"
+            usecase UC3 as "PD: fill journal
+            --
+            - Prescriptions
+            __
+            - History
+            (appointments + notes)
+            __
+            - Test
+            (results, notes, images)
+            "
+        }
+    }
+
+    'relationships;Actors
+    Patient --> UC0 : "authentication, view, request date and time"
+    Secretary --> UC1 : "confirm date, time and location"
+    :Hospital-Personnel: --> UC2 : "add"
+    :Personal-Doctor: --> UC3 : "edit"
+
+    'relationships;Use-cases
+    UC0 .> Journal : extend
+    UC0 .> UC1 : extend
+    UC1 .> Journal : extend
 }
 @enduml
 
