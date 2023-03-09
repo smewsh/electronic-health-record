@@ -11,8 +11,8 @@ rectangle EHR {
     :Hospital-Personnel:
     rectangle use-cases {
         'add use cases
-        usecase "sign in" as UC0
-        usecase "appointment booking" as UC1
+        usecase "sign in" as sign_in
+        usecase "appointment booking" as appointment_booking
         rectangle Journal {
             usecase UC2 as "HP: fill journal
             --
@@ -42,15 +42,15 @@ rectangle EHR {
     }
 
     'relationships;Actors
-    Patient --> UC0 : "authentication, view, request date and time"
-    Secretary --> UC1 : "confirm date, time and location"
+    Patient --> sign_in : "authentication, view, request date and time"
+    Secretary --> appointment_booking : "confirm date, time and location"
     :Hospital-Personnel: --> UC2 : "add"
     :Personal-Doctor: --> UC3 : "edit"
 
     'relationships;Use-cases
-    UC0 .> Journal : extend
-    UC0 .> UC1 : extend
-    UC1 .> Journal : extend
+    sign_in .> Journal : extend
+    sign_in .> appointment_booking : extend
+    appointment_booking .> Journal : extend
 }
 @enduml
 
