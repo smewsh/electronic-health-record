@@ -1,42 +1,84 @@
 @startuml
 
-class User {
-  + int : id
-  + String : firstNames
-  + String : lastName
+abstract User {
+  # cpr : String
+  + firstNames : String
+  + lastName : String
+  + birthDate : Date
+  # signIn(username: String, password: String)
+  # signOut()
 }
 
 class Patient extends User {
-    + String : CPR
-    + MedicalHistory : medicalHistory
+    + medicalHistory : MedicalHistory
+    + homeDoctor: Doctor
+    + doctorsRequestingMedicalHistory: List[Doctor]
     + getMedicalHistory(): MedicalHistory
+    + requestAppointment(date: DateTime): None
+    + allowMedicalHistoryView(Doctor): None
+    + denyMedicalHistoryView(Doctor): None
 }
 
-class Staff extends User {
+class Secretary extends User {
+    + appointmentRequests : List[Appointment]
+    + bookAppointment(Appointment): None
+    + cancelAppointment(Appointment): None
+}
+
+abstract Staff extends User {
+  + schedule: WeekSchedule
+  + accessedPatients: List[Patient]
+  + async requestMedicalHistory(patient: Patient): Promise
   + viewMedicalHistory(patient: Patient): MedicalHistory
 }
 
 class Doctor extends Staff {
-  + List<Appointment> : appointments
+  + appointments : List<Appointment>
+  + prescribePrescription(patient: Patient, prescription: Prescription): None
+  + assignMedicalCondition(patient: Patient, medicalCondition: MedicalCondition): None
+  + addNoteToAppointment(appointment: Appointment, note: String): None
+}
+
+class WeekSchedule {
+    + monday: DaySchedule
+    + tuesday: DaySchedule
+    + wednesday: DaySchedule
+    + thursday: DaySchedule
+    + friday: DaySchedule
+    + saturday: DaySchedule
+    + sunday: DaySchedule
+    + changeSchedule(day: DaySchedule, new: DaySchedule): None
+}
+
+class DaySchedule {
+    + schedule: List[Shift]
+    + addShift(shift: Shift): None
+}
+
+class Shift {
+    + shiftStart: Float
+    + shiftEnd: Float
+    + setShift(start: Float, end: Float): None
 }
 
 class Appointment {
-  + Doctor : doctor
-  + Patient : patient
-  + Date : date
+  + doctor : Doctor
+  + patient : Patient
+  + date : DateTime
+  + note: String
 }
 
 class Prescription {
-  + Patient : patient
-  + Doctor : doctor
-  + String : medication
-  + Date : date
+  + patient : Patient
+  + doctor : Doctor
+  + medication : String
+  + date : DateTime
 }
 
 class MedicalHistory {
-    + List<Appointment> : appointments
-    + List<Prescription> : prescriptions
-    + List<MedicalCondition> : medicalConditions
+    + appointments : List<Appointment>
+    + prescriptions : List<Prescription>
+    + medicalConditions : List<MedicalCondition>
     + getAppointment(doctor: Doctor, date: Date): Appointment
     + getPrescription(doctor: Doctor, date: Date): Prescription
     + getMedicalCondition(condition: String): MedicalCondition
@@ -46,17 +88,20 @@ class MedicalHistory {
 }
 
 class MedicalCondition {
-  + Patient : patient
-  + String : condition
+  + patient : Patient
+  + condition : String
 }
 
-User --> Patient : is a
-User --> Staff : is a
-Staff --> Doctor : is a
+'User --> Patient : is a
+'User --> Staff : is a
+'Staff --> Doctor : is a
+DaySchedule "1" o-- "*" Shift: has
+WeekSchedule "1" o-- "7" DaySchedule: has
 Patient --> MedicalHistory : has
 Staff --> Patient : accesses
-MedicalHistory --> Appointment : has/sets
-MedicalHistory --> Prescription : has/sets
-MedicalHistory --> MedicalCondition : has/sets
+Staff --> WeekSchedule : has
+MedicalHistory o-- Appointment : has/sets
+MedicalHistory o-- Prescription : has/sets
+MedicalHistory o-- MedicalCondition : has/sets
 
 @enduml
