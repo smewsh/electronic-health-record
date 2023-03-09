@@ -17,3 +17,6 @@ System Use Case diagram:
 
 ![](uml/use_case_diagrams/system_useCaseDiagram.png)
 
+System Class diagram:
+
+![](uml/class.png)
