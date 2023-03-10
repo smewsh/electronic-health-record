@@ -11,12 +11,14 @@ An electronic health record (EHR) system, created by
 for the course **Software Development for Digital Health** in Block 3, Spring semester 2023 at Kobenhavns University.
 
 
-### Diagrams
+## Diagrams
 
-System Use Case diagram:
+### System Use Case diagram:
 
-![](uml/use_case_diagrams/system_useCaseDiagram.png)
+![](uml/use_case_diagrams/useCaseDiagram.png)
 
-System Class diagram:
+<br>
 
-![](uml/class.png)
+### System Class diagram:
+
+![](uml/class_diagrams/class.png)
