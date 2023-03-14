@@ -3,7 +3,7 @@
 An electronic health record (EHR) system, created by
 
     * Andreas
-    * Eddie (Ed)
+    * Edward (Ed)
     * (Juan) Daniel
     * Kristófer
     * Logi
