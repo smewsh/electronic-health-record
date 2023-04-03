@@ -1,0 +1,71 @@
+@startuml
+
+title Renew prescription - sequence diagram
+
+actor Patient as patient
+
+participant sundhed.dk as sundhed
+
+participant MitId as mitid
+
+participant GP_system as gpsystem
+
+actor Doctor as doctor
+
+
+autonumber
+
+patient -> sundhed : Login
+activate patient
+activate sundhed
+
+sundhed -> mitid : ____
+activate mitid
+
+mitid --> patient : Login with MitID
+
+
+patient -> mitid : 2 factor authentication
+
+mitid --> patient : Login approved
+
+mitid --> sundhed : Authentication\nresponse
+deactivate mitid
+
+sundhed -> sundhed : redirect
+
+sundhed --> patient : Display medicinkortet
+
+patient -> sundhed : ___
+
+sundhed -> gpsystem : ____
+activate gpsystem
+
+gpsystem -> doctor : ___
+activate doctor
+
+
+
+alt prescription given
+    doctor -> gpsystem : ___
+
+    gpsystem --> sundhed : ___
+
+    sundhed --> patient :
+
+
+else fail
+    doctor -> gpsystem : ___
+    deactivate doctor
+
+    gpsystem --> sundhed : ___
+    deactivate gpsystem
+
+    sundhed --> patient : ___
+    deactivate sundhed
+    deactivate patient
+
+end
+
+
+@enduml
