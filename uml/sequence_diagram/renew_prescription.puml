@@ -19,7 +19,7 @@ patient -> sundhed : Login
 activate patient
 activate sundhed
 
-sundhed -> mitid : ____
+sundhed -> mitid : Prompt login for user
 activate mitid
 
 mitid --> patient : Login with MitID
@@ -36,32 +36,32 @@ sundhed -> sundhed : redirect
 
 sundhed --> patient : Display medicinkortet
 
-patient -> sundhed : ___
+patient -> sundhed : Request\nprescription renewal
 
-sundhed -> gpsystem : ____
+sundhed -> gpsystem : Send prescription\nrenewal nrequest
 activate gpsystem
 
-gpsystem -> doctor : ___
+gpsystem -> doctor : Notify doctor\nabout request
 activate doctor
 
 
 
-alt prescription given
-    doctor -> gpsystem : ___
+alt prescription renewed
+    doctor -> gpsystem : prescription renewed
 
-    gpsystem --> sundhed : ___
+    gpsystem --> sundhed : send new information\nto sundhed
 
-    sundhed --> patient :
+    sundhed --> patient : Notify user
 
 
-else fail
-    doctor -> gpsystem : ___
+else consultation required
+    doctor -> gpsystem : request denied
     deactivate doctor
 
-    gpsystem --> sundhed : ___
+    gpsystem --> sundhed : send rejection\nto sundhed
     deactivate gpsystem
 
-    sundhed --> patient : ___
+    sundhed --> patient : Notify user of rejection
     deactivate sundhed
     deactivate patient
 
