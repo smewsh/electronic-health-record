@@ -22,3 +22,9 @@ for the course **Software Development for Digital Health** in Block 3, Spring se
 ### System Class diagram:
 
 ![](uml/class_diagrams/class.png)
+
+
+
+### Sequence diagram:
+
+![](uml/sequence_diagram/renew_prescription.png)
